@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syed Steel — Projects</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fa;
+    color: #172033;
+}
+
+.projects-section {
+    padding: 90px 20px;
+}
+
+.projects-container {
+    max-width: 1250px;
+    margin: auto;
+}
+
+.projects-header {
+    max-width: 760px;
+    margin: 0 auto 55px;
+    text-align: center;
+}
+
+.section-tag {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-bottom: 15px;
+    border-radius: 30px;
+    background: #e8f1fb;
+    color: #145baa;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.projects-header h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    margin-bottom: 16px;
+}
+
+.projects-header h1 span {
+    color: #145baa;
+}
+
+.projects-header p {
+    color: #687386;
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.project-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e4e9ef;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(20, 35, 55, .07);
+    transition: .3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 20px 45px rgba(20, 35, 55, .13);
+}
+
+.project-image {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+    background: #dfe6ee;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: .5s ease;
+}
+
+.project-card:hover .project-image img {
+    transform: scale(1.05);
+}
+
+.country {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    padding: 8px 14px;
+    background: rgba(255,255,255,.95);
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 800;
+    z-index: 2;
+}
+
+.project-content {
+    padding: 28px;
+}
+
+.project-number {
+    color: #145baa;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.project-content h2 {
+    margin: 8px 0 12px;
+    font-size: 25px;
+}
+
+.project-content p {
+    min-height: 74px;
+    color: #687386;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.project-info {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #edf0f4;
+    margin-top: 20px;
+    padding-top: 17px;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+.project-info span {
+    color: #7b8492;
+}
+
+.project-info strong {
+    color: #172033;
+}
+
+.gallery-btn {
+    width: 100%;
+    padding: 14px 17px;
+    border: 1px solid #d8e0e9;
+    border-radius: 10px;
+    background: white;
+    color: #145baa;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: .25s;
+}
+
+.gallery-btn:hover {
+    background: #145baa;
+    color: white;
+    border-color: #145baa;
+}
+
+.gallery-btn span {
+    font-size: 20px;
+}
+
+/* GALLERY */
+.gallery-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(5, 10, 18, .94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    opacity: 0;
+    visibility: hidden;
+    transition: .25s;
+}
+
+.gallery-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.gallery-box {
+    position: relative;
+    width: min(1050px, 100%);
+    height: min(720px, 88vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-image {
+    max-width: calc(100% - 130px);
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+
+.gallery-close,
+.gallery-nav {
+    position: absolute;
+    z-index: 5;
+    border: 0;
+    color: white;
+    background: rgba(255,255,255,.13);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.gallery-close {
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 30px;
+}
+
+.gallery-close:hover,
+.gallery-nav:hover {
+    background: rgba(255,255,255,.27);
+}
+
+.gallery-nav {
+    top: 50%;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.gallery-prev { left: 0; }
+.gallery-next { right: 0; }
+
+.gallery-counter {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    background: rgba(255,255,255,.13);
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 13px;
+}
+
+body.gallery-open {
+    overflow: hidden;
+}
+
+@media (max-width: 850px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+        max-width: 650px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .projects-section {
+        padding: 60px 15px;
+    }
+
+    .project-image {
+        height: 230px;
+    }
+
+    .project-content {
+        padding: 22px;
+    }
+
+    .project-content p {
+        min-height: auto;
+    }
+
+    .gallery-image {
+        max-width: calc(100% - 80px);
+    }
+
+    .gallery-nav {
+        width: 42px;
+        height: 42px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<section class="projects-section" id="projects">
+<div class="projects-container">
+
+    <div class="projects-header">
+        <span class="section-tag">OUR PROJECTS</span>
+        <h1>Our <span>Projects</span></h1>
+        <p>
+            Successfully delivered structural steel modeling,
+            detailing and engineering projects for clients across
+            international markets.
+        </p>
+    </div>
+
+    <div class="projects-grid" id="projectsGrid"></div>
+
+</div>
+</section>
+
+<!-- Gallery -->
+<div class="gallery-modal" id="galleryModal">
+    <div class="gallery-box">
+
+        <button class="gallery-close" id="galleryClose">×</button>
+
+        <button class="gallery-nav gallery-prev" id="galleryPrev">❮</button>
+
+        <img class="gallery-image" id="galleryImage" src="" alt="Project image">
+
+        <button class="gallery-nav gallery-next" id="galleryNext">❯</button>
+
+        <div class="gallery-counter" id="galleryCounter">1 / 1</div>
+    </div>
+</div>
+
+<script>
+const projects = [
+    {
+        country: "Australia",
+        title: "Australian Project",
+        area: "420 Sqm",
+        description: "Detailed for Australian client with professional structural steel modeling and detailing services.",
+        folder: "project1"
+    },
+    {
+        country: "USA",
+        title: "American Project",
+        area: "2970 Sqf",
+        description: "Completed and issued for construction according to project requirements and professional detailing standards.",
+        folder: "project2"
+    },
+    {
+        country: "Australia",
+        title: "Australian Project",
+        area: "600 Sqm",
+        description: "Detailed for Australian client with accurate 3D structural steel modeling and fabrication detailing.",
+        folder: "project3"
+    },
+    {
+        country: "USA",
+        title: "American Project",
+        area: "2663 Sqf",
+        description: "Completed and issued for construction with detailed structural steel drawings and documentation.",
+        folder: "project4"
+    },
+    {
+        country: "Africa",
+        title: "African Project",
+        area: "670 Sqm",
+        description: "Structural steel modeling and detailing completed for an African client according to project specifications.",
+        folder: "project5"
+    },
+    {
+        country: "Australia",
+        title: "Australian Project",
+        area: "265 Sqm",
+        description: "Detailed for Australian client with professional steel detailing and construction-ready documentation.",
+        folder: "project6"
+    },
+    {
+        country: "USA",
+        title: "American Project",
+        area: "3200 Sqf",
+        description: "Detailed for American client with professional structural steel modeling and detailing services.",
+        folder: "project7"
+    },
+    {
+        country: "Australia",
+        title: "Australian Project",
+        area: "350 Sqm",
+        description: "Detailed for Australian client with accurate structural steel modeling and fabrication detailing.",
+        folder: "project8"
+    },
+    {
+        country: "USA",
+        title: "American Project",
+        area: "4102 Sqf",
+        description: "Completed and issued for construction with professional structural steel detailing and documentation.",
+        folder: "project9"
+    },
+    {
+        country: "Africa",
+        title: "African Project",
+        area: "320 Sqm",
+        description: "Structural steel project completed for an African client with professional detailing services.",
+        folder: "project10"
+    }
+];
+
+
+/* =========================================================
+   PROJECT IMAGES
+========================================================= */
+
+function getImages(projectIndex) {
+
+    const project = projects[projectIndex];
+
+    return [
+        `images/projects/${project.folder}/1.jpg`,
+        `images/projects/${project.folder}/2.jpg`,
+        `images/projects/${project.folder}/3.jpg`,
+        `images/projects/${project.folder}/4.jpg`
+    ];
+}
+
+
+/* =========================================================
+   CREATE PROJECT CARDS
+========================================================= */
+
+const grid = document.getElementById("projectsGrid");
+
+projects.forEach((project, index) => {
+
+    const images = getImages(index);
+
+    grid.innerHTML += `
+        <article class="project-card">
+
+            <div class="project-image">
+
+                <img
+                    src="${images[0]}"
+                    alt="${project.title}"
+                    onerror="this.src='https://placehold.co/1200x700/e9eef5/172033?text=Image+Not+Found'"
+                >
+
+                <span class="country">
+                    ${project.country}
+                </span>
+
+            </div>
+
+
+            <div class="project-content">
+
+                <span class="project-number">
+                    ${String(index + 1).padStart(2, "0")}
+                </span>
+
+                <h2>
+                    ${project.title}
+                </h2>
+
+                <p>
+                    ${project.description}
+                </p>
+
+                <div class="project-info">
+
+                    <span>
+                        Project Area
+                    </span>
+
+                    <strong>
+                        ${project.area}
+                    </strong>
+
+                </div>
+
+
+                <button
+                    class="gallery-btn"
+                    onclick="openGallery(${index})"
+                >
+
+                    More Pictures
+
+                    <span>→</span>
+
+                </button>
+
+            </div>
+
+        </article>
+    `;
+});
+
+
+/* =========================================================
+   GALLERY VARIABLES
+========================================================= */
+
+let currentProject = 0;
+let currentImage = 0;
+
+const modal =
+    document.getElementById("galleryModal");
+
+const galleryImage =
+    document.getElementById("galleryImage");
+
+const counter =
+    document.getElementById("galleryCounter");
+
+
+/* =========================================================
+   SHOW IMAGE
+========================================================= */
+
+function showImage() {
+
+    const images =
+        getImages(currentProject);
+
+    const project =
+        projects[currentProject];
+
+
+    galleryImage.src =
+        images[currentImage];
+
+
+    galleryImage.alt =
+        `${project.title} - Image ${currentImage + 1}`;
+
+
+    counter.textContent =
+        `${currentImage + 1} / ${images.length}`;
+
+
+    /* If actual image doesn't exist */
+    galleryImage.onerror = function () {
+
+        this.src =
+            "https://placehold.co/1200x700/e9eef5/172033?text=Image+Not+Found";
+
+    };
+
+}
+
+
+/* =========================================================
+   OPEN GALLERY
+========================================================= */
+
+function openGallery(projectIndex) {
+
+    currentProject = projectIndex;
+
+    currentImage = 0;
+
+    showImage();
+
+    modal.classList.add("active");
+
+    document.body.classList.add("gallery-open");
+
+}
+
+
+/* =========================================================
+   CLOSE GALLERY
+========================================================= */
+
+function closeGallery() {
+
+    modal.classList.remove("active");
+
+    document.body.classList.remove("gallery-open");
+
+}
+
+
+/* =========================================================
+   NEXT IMAGE
+========================================================= */
+
+function nextImage() {
+
+    const images =
+        getImages(currentProject);
+
+
+    currentImage++;
+
+
+    if (currentImage >= images.length) {
+
+        currentImage = 0;
+
+    }
+
+
+    showImage();
+
+}
+
+
+/* =========================================================
+   PREVIOUS IMAGE
+========================================================= */
+
+function previousImage() {
+
+    const images =
+        getImages(currentProject);
+
+
+    currentImage--;
+
+
+    if (currentImage < 0) {
+
+        currentImage =
+            images.length - 1;
+
+    }
+
+
+    showImage();
+
+}
+
+
+/* =========================================================
+   BUTTON EVENTS
+========================================================= */
+
+document
+    .getElementById("galleryClose")
+    .addEventListener(
+        "click",
+        closeGallery
+    );
+
+
+document
+    .getElementById("galleryNext")
+    .addEventListener(
+        "click",
+        nextImage
+    );
+
+
+document
+    .getElementById("galleryPrev")
+    .addEventListener(
+        "click",
+        previousImage
+    );
+
+
+/* =========================================================
+   CLICK OUTSIDE
+========================================================= */
+
+modal.addEventListener(
+    "click",
+    function(event) {
+
+        if (event.target === modal) {
+
+            closeGallery();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            !modal.classList.contains("active")
+        ) {
+            return;
+        }
+
+
+        if (event.key === "Escape") {
+
+            closeGallery();
+
+        }
+
+
+        if (event.key === "ArrowRight") {
+
+            nextImage();
+
+        }
+
+
+        if (event.key === "ArrowLeft") {
+
+            previousImage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MOBILE SWIPE
+========================================================= */
+
+let startX = 0;
+
+
+galleryImage.addEventListener(
+    "touchstart",
+    function(event) {
+
+        startX =
+            event.changedTouches[0].screenX;
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+galleryImage.addEventListener(
+    "touchend",
+    function(event) {
+
+        const endX =
+            event.changedTouches[0].screenX;
+
+
+        const distance =
+            endX - startX;
+
+
+        if (Math.abs(distance) < 50) {
+
+            return;
+
+        }
+
+
+        if (distance < 0) {
+
+            nextImage();
+
+        } else {
+
+            previousImage();
+
+        }
+
+    },
+    {
+        passive: true
+    }
+);
+</script>
+
+</body>
+</html>
